@@ -82,7 +82,7 @@ function App() {
         <img src="/lss.png" alt="Loot Survivor" className="w-8" />
       </div>
       <p className="text-[#4af626] mb-4 text-center">
-        Select your avatar and make it green
+        Select your PFP and make it green
       </p>
       <div
         className={`w-full max-w-xs h-64 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer mb-4 ${
