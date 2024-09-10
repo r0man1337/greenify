@@ -67,7 +67,7 @@ function App() {
     if (canvas) {
       const link = document.createElement('a')
       const timestamp = new Date().toISOString().replace(/[:.-]/g, '')
-      link.download = `${timestamp}-green-avatar.png`
+      link.download = `${timestamp}-green-pfp.png`
       link.href = canvas.toDataURL('image/png')
       link.click()
     }
