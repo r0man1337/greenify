@@ -45,12 +45,22 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black vt323-regular">
+      <div className="flex flex-row items-center justify-center space-x-4  mb-8">
+        <h1 className="text-4xl font-bold text-[#4af626]">
+          Turn Starknet Green
+        </h1>
+        <img src="/lss.png" alt="Loot Survivor" className="w-8" />
+      </div>
+      <p className="text-[#4af626] mb-2">
+        Select your avatar and make it green
+      </p>
       <input
         type="file"
         accept="image/*"
         onChange={handleImageUpload}
         className="mb-4 text-white"
+        placeholder="Select your avatar"
       />
       {image && (
         <canvas
