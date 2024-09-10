@@ -74,18 +74,18 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black vt323-regular">
-      <div className="flex flex-row items-center justify-center space-x-4  mb-8">
-        <h1 className="text-4xl font-bold text-[#4af626]">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black vt323-regular p-4">
+      <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#4af626] text-center">
           Turn Starknet Green
         </h1>
         <img src="/lss.png" alt="Loot Survivor" className="w-8" />
       </div>
-      <p className="text-[#4af626] mb-2">
+      <p className="text-[#4af626] mb-4 text-center">
         Select your avatar and make it green
       </p>
       <div
-        className={`w-64 h-64 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer mb-4 ${
+        className={`w-full max-w-xs h-64 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer mb-4 ${
           isDragging ? 'border-[#4af626] bg-[#4af62620]' : 'border-gray-300'
         }`}
         onDragOver={handleDragOver}
@@ -93,7 +93,7 @@ function App() {
         onDrop={handleDrop}
         onClick={() => document.getElementById('fileInput')?.click()}
       >
-        <p className="text-[#4af626] text-center">
+        <p className="text-[#4af626] text-center px-4">
           {isDragging ? 'Drop image here' : 'Click or drag image here'}
         </p>
       </div>
@@ -108,7 +108,10 @@ function App() {
       />
       {image && (
         <>
-          <canvas ref={canvasRef} className="max-w-[500px] rounded-xl mb-4" />
+          <canvas
+            ref={canvasRef}
+            className="w-full max-w-[500px] rounded-xl mb-4"
+          />
           <button
             onClick={handleDownload}
             className="px-4 py-2 bg-[#4af626] text-black rounded hover:bg-[#3ad516] transition-colors"
