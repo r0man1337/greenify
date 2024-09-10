@@ -3,13 +3,30 @@ import React, { useState, useRef, useEffect } from 'react'
 function App() {
   const [image, setImage] = useState<string | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => setImage(e.target?.result as string)
-      reader.readAsDataURL(file)
+  const handleImageUpload = (file: File) => {
+    const reader = new FileReader()
+    reader.onload = (e) => setImage(e.target?.result as string)
+    reader.readAsDataURL(file)
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const file = e.dataTransfer.files[0]
+    if (file && file.type.startsWith('image/')) {
+      handleImageUpload(file)
     }
   }
 
@@ -44,6 +61,18 @@ function App() {
     ctx.putImageData(imageData, 0, 0)
   }
 
+  // Add this new function to handle image download
+  const handleDownload = () => {
+    const canvas = canvasRef.current
+    if (canvas) {
+      const link = document.createElement('a')
+      const timestamp = new Date().toISOString().replace(/[:.-]/g, '')
+      link.download = `${timestamp}-green-avatar.png`
+      link.href = canvas.toDataURL('image/png')
+      link.click()
+    }
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black vt323-regular">
       <div className="flex flex-row items-center justify-center space-x-4  mb-8">
@@ -55,18 +84,38 @@ function App() {
       <p className="text-[#4af626] mb-2">
         Select your avatar and make it green
       </p>
+      <div
+        className={`w-64 h-64 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer mb-4 ${
+          isDragging ? 'border-[#4af626] bg-[#4af62620]' : 'border-gray-300'
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => document.getElementById('fileInput')?.click()}
+      >
+        <p className="text-[#4af626] text-center">
+          {isDragging ? 'Drop image here' : 'Click or drag image here'}
+        </p>
+      </div>
       <input
+        id="fileInput"
         type="file"
         accept="image/*"
-        onChange={handleImageUpload}
-        className="mb-4 text-white"
-        placeholder="Select your avatar"
+        onChange={(e) =>
+          e.target.files?.[0] && handleImageUpload(e.target.files[0])
+        }
+        className="hidden"
       />
       {image && (
-        <canvas
-          ref={canvasRef}
-          className="max-w-full max-h-[80vh] rounded-xl"
-        />
+        <>
+          <canvas ref={canvasRef} className="max-w-[500px] rounded-xl mb-4" />
+          <button
+            onClick={handleDownload}
+            className="px-4 py-2 bg-[#4af626] text-black rounded hover:bg-[#3ad516] transition-colors"
+          >
+            Download
+          </button>
+        </>
       )}
     </div>
   )
